@@ -1,0 +1,3 @@
+[submodule "msi_ec_dbus"]
+	path = msi_ec_dbus
+	url = https://github.com/lmaxyz/msi_ec_dbus
