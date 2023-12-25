@@ -78,9 +78,9 @@ impl PowerModeController {
     where
         A: AppendAll
     {
-        let proxy = &self.dbus_conn.with_proxy("org.msi_ec_backend", "/power_control", Duration::from_millis(5000));
+        let proxy = &self.dbus_conn.with_proxy("org.msi_ec_dbus", "/power_control", Duration::from_millis(5000));
         
-        let (result,): (String,) = proxy.method_call("org.msi_ec_backend", method_name, args)?;
+        let (result,): (String,) = proxy.method_call("org.msi_ec_dbus", method_name, args)?;
 
         Ok(Some(result))
     }

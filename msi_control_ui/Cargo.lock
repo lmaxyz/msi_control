@@ -161,7 +161,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "msi_control_ui"
+name = "msi_control"
 version = "0.1.0"
 dependencies = [
  "dbus",
