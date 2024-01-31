@@ -37,7 +37,6 @@ impl TrayIcons {
 
 pub struct MsiControlTray {
     available_icons: TrayIcons,
-    icon: Icon,
     message_sender: SyncSender<Message>,
     current_power_mode: PowerMode,
     power_mode_controller: PowerModeController
@@ -48,12 +47,10 @@ impl MsiControlTray {
         let available_icons = TrayIcons::new();
         let power_mode_controller = PowerModeController::new();
         let current_power_mode = power_mode_controller.get_current_power_mode()?;
-        let icon = available_icons.get_power_mode_icon(current_power_mode);
 
         Ok(MsiControlTray {
             current_power_mode,
             available_icons,
-            icon,
             message_sender,
             power_mode_controller
         })
@@ -64,10 +61,6 @@ impl MsiControlTray {
         Ok(())
     }
 
-    pub fn set_icon(&mut self, icon: Icon) {
-        self.icon = icon
-    }
-
     fn _get_current_power_mode(&self) -> Result<PowerMode, dbus::Error> {
         self.power_mode_controller.get_current_power_mode()
     }
@@ -75,11 +68,9 @@ impl MsiControlTray {
 
 impl Tray for MsiControlTray {
     fn icon_pixmap(&self) -> Vec<Icon> {
-        vec![Icon {
-            width: self.icon.height,
-            height: self.icon.width,
-            data: self.icon.data.clone(),
-        }]
+        vec![
+            self.available_icons.get_power_mode_icon(self.current_power_mode)
+        ]
     }
     
     fn title(&self) -> String {
@@ -103,8 +94,6 @@ impl Tray for MsiControlTray {
                             let selected_power_mode = j.into();
                             if tray.set_power_mode(selected_power_mode).is_ok() {
                                 tray.current_power_mode = selected_power_mode;
-                                let new_icon = tray.available_icons.get_power_mode_icon(selected_power_mode);
-                                tray.set_icon(new_icon);
                             };
                         }),
                         options: vec![
@@ -127,6 +116,7 @@ impl Tray for MsiControlTray {
             }.into(),
             
             ksni::MenuItem::Separator,
+
             StandardItem {
                 label: "Quit".to_string(),
                 enabled: true,
