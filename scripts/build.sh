@@ -1,9 +1,10 @@
 #!/bin/bash -e
 
 cd ../
+rm -rfv build
 mkdir -p build
-cp -r ./msi_ec_dbus/dbus_conf ./build/dbus_conf
-cp -r ./msi_control_ui/icons ./build/icons
+cp -r ./msi_ec_dbus/dbus_conf ./build
+cp -r ./msi_control_ui/icons/app_icon.png ./build
 cp ./scripts/install.sh ./build
 cp ./scripts/uninstall.sh ./build
 

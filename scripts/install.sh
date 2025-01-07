@@ -19,7 +19,7 @@ echo "Installation..."
 
 mkdir -p /opt/msi_control
 cp ./msi_control /opt/msi_control/msi_control
-cp -r ./icons /opt/msi_control/
+cp ./app_icon.png /opt/msi_control/app_icon.png
 
 install -vDm755 ./$DBUS_BIN $LIBEXEC_PATH$DBUS_BIN
 install -vDm644 ./dbus_conf/$DBUS_CONF $DBUS_SYSTEM_PATH$DBUS_CONF
