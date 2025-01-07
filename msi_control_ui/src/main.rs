@@ -1,16 +1,13 @@
-use {
-    std::sync::mpsc,
-    ksni::TrayService
-};
+use {ksni::TrayService, std::sync::mpsc};
 
-mod tray;
 mod controllers;
+mod tray;
+mod utils;
 
 use tray::MsiControlTray;
 
-
 enum Message {
-    Quit
+    Quit,
 }
 
 fn main() {
@@ -18,16 +15,12 @@ fn main() {
 
     let tray = MsiControlTray::new(tx).unwrap();
     let tray_srv = TrayService::new(tray);
-    // let tray_handle = tray_srv.handle();
     tray_srv.spawn();
 
     loop {
         match rx.recv() {
-            Ok(Message::Quit) => {
-                break
-            }
+            Ok(Message::Quit) => break,
             _ => {}
         }
     }
-
 }
